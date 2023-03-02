@@ -17,6 +17,8 @@ The code creates four resources:
 3) A DynamoDB to save the JSON output
 4) A SQS queue
 
+The problem at hand is that we need to process CSV files stored in an S3 bucket, convert them to JSON format, and store them in a permanent storage. Additionally, we need to send customer messages and error messages to an SQS queue.
+
 The solution consists of a Lambda function written in Python that is triggered by an S3 event when a new CSV file is uploaded to the bucket. The Lambda function reads the CSV file from the S3 bucket, converts it to JSON format, and stores the converted data in a DynamoDB table. The Lambda function then creates a customer or error message based on the type of data in the CSV file and sends it to an SQS queue.
 
 The code has been written to scale by creating a DynamoDB table with on-demand billing mode, which means that the table will automatically scale up or down based on the number of read and write requests. The SQS queue is also designed to handle large volumes of messages, and AWS provides a scalable and reliable infrastructure for this purpose.
@@ -39,7 +41,7 @@ If you need to make changes to the python script, look in the "src" folder. You 
 
 - Use Amazon Kinesis Data Streams to handle large volumes of data in real-time. This would help scale.
 
-- Use Eventbridge to handle multiple APIs trying to consume the processed data.
+- Use Eventbridge to handle multiple APIs trying to consume the processed data. It can improve scalability by allowing you to create multiple event buses and event rules to handle different types of messages.
 
 - Implement authentication and authorization mechanisms to restrict access to the S3 bucket, DynamoDB table, and SQS queue. 
 
